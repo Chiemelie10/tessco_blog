@@ -1,0 +1,29 @@
+@media only screen and (max-width: 500px) {
+    .filter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        width: 100%;
+        background-color: orange;
+    }
+
+    .filter form {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .filter .search {
+        height: 20px;
+        border-radius: 10px;
+        width: 60%;
+    }
+
+    .filter .submit {
+        border-radius: 5px;
+        height: 25.1px;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,11 @@
+{% extends 'app_user/index_page_layout.html' %}
+
+{% block title %}
+    Sign up
+{% endblock %}
+
+{% block form %}
+    <form action="{% url '' %}" method="post">
+        {{ forms.as_p }}
+    </form>
+{% endblock %}

@@ -1,0 +1,66 @@
+@media screen and (max-width:500px) {
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80px;
+        width: 100%;
+        padding: 0 20px;
+        background-color: #04325f;
+    }
+
+    .header-container .sign-in {
+        display: block;
+        font-size: min(5.5vw, 20px);
+        color: gold;
+        font-weight: bold;
+        display: none;
+    }
+
+    .header-container .sign-in:hover {
+        color: gold;
+        text-decoration: underline;
+    }
+
+    .sign-in a {
+        cursor: pointer;
+    }
+
+    .moto {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .moto span {
+        display: block;
+        color: gold;
+        font-size: min(5.5vw, 20px);
+        font-weight: bolder;
+    }
+
+    .moto small {
+        display: block;
+    }
+
+    .moto i {
+        color: #ffffff;
+        font-size: min(4.5vw, 16px);
+        font-weight: normal;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .moto span {
+        display: block;
+        color: gold;
+        font-size: max(5vw, 17px);
+        font-weight: bolder;
+    }
+
+    .moto i {
+        color: #ffffff;
+        font-size: max(4.5vw, 13px);
+    }
+}

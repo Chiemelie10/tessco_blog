@@ -1,0 +1,7 @@
+*.sql
+.env
+migrations
+__pycache__
+media
+Credentials*
+article.png

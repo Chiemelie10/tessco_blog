@@ -1,0 +1,125 @@
+{% extends 'app_user/index_page_layout.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}
+    Tessco blog
+{% endblock %}
+
+{% block footer_stylesheet %}
+    <link href="{% static 'app_user/css/footer.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+    <div class="moto">
+        <span> @Tessco blog </span>
+        <small><i>Home for trending news</i></small>
+    </div>
+    <a class="sign-in">Sign in</a>
+{% endblock %}
+
+{% block menu %}
+    <div class="menu-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <div class="menu">
+        <div class="categories">
+            <span> Categories: </span>
+            <nav>
+                <ul>
+                    {% for category in categories %}
+                    <li><a>{{ category.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+        <div class="menu-socials">
+            <span> Contact us: </span>
+            <ul>
+                <li><a href="mailto:tesscoblog@gmail.com">Email</a></li>
+                <li><a href="https:twitter.com">Twitter</a></li>
+                <li><a href="https:facebook.com">Facebook</a></li>
+            </ul>
+        </div>
+        <div class="others">
+            <div>
+                <span> Others: </span>
+                <span> Advertise with us </span>
+                <span> Complaints & corrections </span>
+                <span> Privacy policy </span>
+                <span> Terms and conditions </span>
+            </div>
+        </div>
+    </div>
+    <a class="sign-in">Sign in</a>
+    <div class="overlay"></div>
+{% endblock %}
+
+{% block headline %}
+    <a class="each-headline-link">
+        <div class="each-headline-container">
+            <div class="headline-image-container">
+                <img class="headline-image">
+            </div>
+            <div class="headline-category-title">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </a>
+{% endblock %}
+
+{% block active_articles %}
+    {% for article in articles %}
+        <div class="each-article-container">
+            <div class="each-article">
+                <a class="article-link">
+                    <div class="article-image-title">
+                        <div class="image">
+                            <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}">
+                        </div>
+                        <div class="article-title">
+                            <span>{{ article.category.name}}</span>
+                            <span>{{ article.title }}</span>
+                        </div>
+                    </div>
+                    <div class="article-performance">
+                        <div class="like">
+                            <img class="article-like" src="{% static 'app_user/img/like.png' %}" alt="Like">
+                            <div> 20 </div>
+                        </div>
+                        <div class="comment">
+                            <img class="article-comment" src="{% static 'app_user/img/chat-icon.png' %}" alt="Comment">
+                            <div> 20 </div>
+                        </div>
+                        <div class="author-time">
+                            {{ article.created_at|most_significant_timeunit }} ago
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block footer %}
+    <div class="footer">
+        <div class="assist">
+            <a>Help</a>
+            <a>Advertise with us</a>
+            <a>Complaints & corrections</a>
+        </div>
+        <div class="socials">
+            <a>Contact us:</a>
+            <a>Twitter</a>
+            <a>Facebook</a>
+            <a href="mailto:tesscoblog@gmail.com">Email</a>
+        </div>
+        <div class="rules">
+            <a>Privacy policy</a>
+            <a>Terms and conditions</a>
+        </div>
+    </div>
+{% endblock %}

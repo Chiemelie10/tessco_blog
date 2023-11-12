@@ -1,0 +1,47 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title> {% block title %}{% endblock %} </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'app_user/css/body.css' %}" rel="stylesheet">
+        <link href="{% static 'app_user/css/header.css' %}" rel="stylesheet">
+        <link href="{% static 'app_user/css/categories.css' %}" rel="stylesheet">
+        <link href="{% static 'app_user/css/headline.css' %}" rel="stylesheet">
+        <link href="{% static 'app_user/css/articles.css' %}" rel="stylesheet">
+        <link href="{% static 'app_user/css/spinner.css' %}" rel="stylesheet">
+        {% block footer_stylesheet %}{% endblock %}
+        <script src="{% static 'app_user/js/headline.js' %}"></script>
+        <script src="{% static 'app_user/js/moment.js' %}"></script>
+        <script src="{% static 'app_user/js/categories.js' %}"></script>
+        <script src="{% static 'app_user/js/infinite_scroll.js' %}"></script>
+    </head>
+    <body>
+        <header class="header-container">
+            {% block header %}
+            {% endblock %}
+        </header>
+        <section class="menu_wrapper">
+            {% block menu %}
+            {% endblock %}
+        </section>
+        <div class="headline-title"><span>Trending news</span></div>
+        <section class="headline-container">
+            {% block headline %}
+            {% endblock %}
+        </section>
+        <div class="article-container-title"><span>Other news</span></div>
+        <section class="article-container">
+            {% block active_articles %}
+            {% endblock %}
+        </section>
+        <div class="loader" id="loading-symbol">
+        </div>
+        <footer>
+            {% block footer %}
+            {% endblock %}
+        </footer>
+    </body>
+</html>
