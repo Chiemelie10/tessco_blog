@@ -15,7 +15,7 @@ class Article(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
     is_headline = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    article_is_active = models.BooleanField(default=True)
     thumbnail = models.FileField(upload_to='article-thumbnail')
     images = models.ForeignKey(Image, on_delete=models.SET_NULL,
                                related_name='articles', blank=True, null=True)

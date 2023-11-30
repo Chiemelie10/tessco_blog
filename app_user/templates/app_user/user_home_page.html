@@ -1,9 +1,16 @@
 {% extends 'app_user/index_page_layout.html' %}
 {% load static %}
-{% load custom_filters %}
 
 {% block title %}
     Tessco blog
+{% endblock %}
+
+{% block article_stylesheet %}
+    <link href="{% static 'app_user/css/home_page_articles.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block spinner_stylesheet %}
+    <link href="{% static 'app_user/css/home_page_spinner.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block footer_stylesheet %}
@@ -37,25 +44,28 @@
         </div>
         <div class="menu-socials">
             <span> Contact us: </span>
-            <ul>
-                <li><a href="mailto:tesscoblog@gmail.com">Email</a></li>
-                <li><a href="https:twitter.com">Twitter</a></li>
-                <li><a href="https:facebook.com">Facebook</a></li>
-            </ul>
+            <nav>
+                <ul>
+                    <li><a href="mailto:tesscoblog@gmail.com">Email</a></li>
+                    <li><a href="https:twitter.com">Twitter</a></li>
+                    <li><a href="https:facebook.com">Facebook</a></li>
+                </ul>
+            </nav>
         </div>
         <div class="others">
-            <div>
-                <span> Others: </span>
-                <span> Others: </span>
-                <span> Advertise with us </span>
-                <span> Complaints & corrections </span>
-                <span> Privacy policy </span>
-                <span> Terms and conditions </span>
-                <span> Logout </span>
-            </div>
+            <span> Others: </span>
+            <nav>
+                <ul>
+                    <li><a> Advertise with us </a></li>
+                    <li><a> Complaints & corrections </a></li>
+                    <li><a> Privacy policy </a></li>
+                    <li><a> Terms and conditions </a></li>
+                    <li><a href="{% url 'logout' %}?next=/"> Logout </a></li>
+                </ul>
+            </nav>
         </div>
     </div>
-    <a class="sign-in">Sign in</a>
+    <a class="sign-in">Hi {{ user.username|truncatechars:15 }}</a>
     <div class="overlay"></div>
 {% endblock %}
 
@@ -74,44 +84,51 @@
 {% endblock %}
 
 {% block active_articles %}
-    {% for article in articles %}
-        <div class="each-article-container">
-            <div class="each-article">
-                <a class="article-link">
-                    <div class="article-image-title">
-                        <div class="image">
-                            <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}">
-                        </div>
-                        <div class="article-title">
-                            <span>{{ article.category.name}}</span>
-                            <span>{{ article.title }}</span>
-                        </div>
+    <div class="each-article-container">
+        <div class="each-article">
+            <a class="article-link">
+                <div class="article-image-title">
+                    <div class="image">
+                        <img src="{{ article.thumbnail.url }}" class="lazy">
                     </div>
-                    <div class="article-performance">
-                        <div class="like">
-                            <img class="article-like" src="{% static 'app_user/img/like.png' %}" alt="Like">
-                            <div> 20 </div>
-                        </div>
-                        <div class="comment">
-                            <img class="article-comment" src="{% static 'app_user/img/chat-icon.png' %}" alt="Comment">
-                            <div> 20 </div>
-                        </div>
-                        <div class="author-time">
-                            {{ article.created_at|most_significant_timeunit }} ago
-                        </div>
+                    <div class="article-title">
+                        <span></span>
+                        <span></span>
                     </div>
-                </a>
-            </div>
+                </div>
+                <div class="article-performance">
+                    <div class="like">
+                        <img class="article-like" src="{% static 'app_user/img/like.png' %}">
+                        <div> 20 </div>
+                    </div>
+                    <div class="comment">
+                        <img class="article-comment" src="{% static 'app_user/img/chat-icon.png' %}">
+                        <div> 20 </div>
+                    </div>
+                    <div class="author-time">
+                    </div>
+                </div>
+            </a>
         </div>
-    {% endfor %}
+    </div>
 {% endblock %}
 
 {% block footer %}
     <nav class="footer">
-        <ul class="footer-link-container">
-            <li><a>To top</a></li>
-            <li><a>Create</a></li>
-            <li><a>Profile</a></li>
-        </ul>
+        <a>
+            <img src="{% static 'app_user/img/triangle.png' %}">
+            <span>To top</span>
+        </a>
+        <a>
+            <img src="{% static 'app_user/img/article.png' %}">
+            <span>Create</span>
+        </a>
+        <a>
+            <img src="{% static 'app_user/img/profile.png' %}">
+            <span>Profile</span>
+        </a>
     </nav>
+{% endblock %}
+{% block script %}
+    {{ total_pages|json_script:"total_pages_id"}}
 {% endblock %}

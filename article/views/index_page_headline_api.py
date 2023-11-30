@@ -15,6 +15,6 @@ class IndexPageHeadline(APIView):
 
     def get(self, request):
         """This method returns all active articles that have headline set to true"""
-        headlines = Article.objects.filter(is_active=True, is_headline=True).order_by('-created_at')
+        headlines = Article.objects.filter(article_is_active=True, is_headline=True).order_by('-created_at')
         serializer = ArticleModelSerializer(headlines, many=True)
         return JsonResponse(serializer.data, status=200, safe=False)

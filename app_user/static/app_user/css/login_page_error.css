@@ -1,0 +1,15 @@
+form .alert_error,
+form .alert_non_field_error {
+    color: #ba2121;
+    font-size: 16px;
+}
+
+form .alert_error input {
+    border: 1px solid #ba2121;
+}
+
+form .alert_error span,
+form .alert_non_field_error span {
+    display: block;
+    margin-bottom: 5px;
+}

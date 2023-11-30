@@ -51,15 +51,15 @@ INSTALLED_APPS = [
     'user_profile',
     'role',
     'category',
-    'account',
+    'user_account',
     'article',
     'image',
     # google allauth setup from line 56 - 57
-    # 'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.google'
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google'
 ]
 
 # google allauth setup from line 64 - 73
@@ -82,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'tessco_blog.urls'
@@ -89,7 +90,7 @@ ROOT_URLCONF = 'tessco_blog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [path.join(BASE_DIR /'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,15 +129,15 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
+    # {
+    #     'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    # },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
@@ -176,8 +177,28 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.accounts.auth_backends.AuthenticationBackend'
+    'allauth.account.auth_backends.AuthenticationBackend'
 )
 
-LOGIN_REDIRECT_URL = '/'
+# GET_FORM_CLASS = 'app_user.forms.UserModelForm'
+
+AUTHENTICATION_METHOD = 'username'
+
+# ACCOUNT_FORMS = {
+#     #'signup': 'app_user.forms.UserModelForm',
+#     'login': 'app_user.forms.UserModelForm',
+# }
+
+# signs in users that logged using django-allauth without showing the google warning page. 
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+LOGIN_REDIRECT_URL = '/home'
 LOGOUT_REDIRECT_URL = '/'
+
+#SESSION_COOKIE_SECURE = True
+#SESSION_COOKIE_AGE = 1209600
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    #"django.contrib.auth.hashers.PBKDF2PasswordHasher",
+]

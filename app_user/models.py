@@ -37,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     """This class defines the columns of the users table."""
     id = models.CharField(default=uuid4, max_length=36, primary_key=True,
                           unique=True, editable=False)
-    password = models.CharField(max_length=100)
+    password = models.CharField(max_length=128)
     username = models.CharField(max_length=100, unique=True)
     email = models.EmailField(unique=True)
     is_staff = models.BooleanField(default=False)

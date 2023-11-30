@@ -1,0 +1,110 @@
+{% extends 'account/base.html' %}
+{% load i18n %}
+{% load allauth account socialaccount %}
+{% load static %}
+
+{% block head_title %}
+    {% trans 'Tessco blog signup page' %}
+{% endblock head_title %}
+
+{% block extra_head %}
+    <meta charset="utf-8">
+    <link href="{% static 'app_user/css/login_page_body.css' %}" rel="stylesheet">
+    <link href="{% static 'app_user/css/login_page_header.css' %}" rel="stylesheet">
+    <link href="{% static 'app_user/css/login_page_google_auth.css' %}" rel="stylesheet">
+    <link href="{% static 'app_user/css/login_page_separator.css' %}" rel="stylesheet">
+    <link href="{% static 'app_user/css/login_page_form.css' %}" rel="stylesheet">
+    <link href="{% static 'app_user/css/login_page_signup.css' %}" rel="stylesheet">
+    <link href="{% static 'app_user/css/login_page_error.css' %}" rel="stylesheet">
+    <script src="{% static 'app_user/js/signup_error_display.js' %}"></script>
+{% endblock extra_head %}
+
+{% block content %}
+    <header class="page_header">
+        <span> @Tessco blog </span>
+        <small><i>{% trans 'Home for trending news' %}</i></small>
+    </header>
+    <a title="Google" href="{% provider_login_url 'google' %}" class="google_auth">
+        <div>
+            <img src="{% static 'app_user/img/google_logo.png' %}">
+            <span>{% trans 'Sign in with Google' %}</span>
+        </div>
+    </a>
+    <div class="separator_container">
+        <div class="line"></div>
+        <div class="or">Or</div>
+        <div class="line"></div>
+    </div>
+    <div class="login_form">
+        <form method="post" action="{% url 'account_signup' %}">
+            {% csrf_token %}
+            {% if form.username.errors %}
+                <p class="username_container alert_error">
+                    {% for error in form.username.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                    {{ form.username.label_tag}}
+                    {{ form.username }}
+                </p>
+            {% else %}
+                <p class="username_container">
+                    {{ form.username.label_tag}}
+                    {{ form.username }}
+                </p>
+            {% endif %}
+            {% if form.email.errors %}
+                <p class="email_container alert_error">
+                    {% for error in form.email.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </p>
+            {% else %}
+                <p class="email_container">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </p>
+            {% endif %}
+            {% if form.password1.errors %}
+                <p class="password_container1 alert_error">
+                    {% for error in form.password1.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                    {{ form.password1.label_tag }}
+                    {{ form.password1 }}
+                </p>
+            {% else %}
+                <p class="password_container1">
+                    {{ form.password1.label_tag }}
+                    {{ form.password1 }}
+                </p>
+            {% endif %}
+            <ul class="password_validators">
+                <li>{% trans 'Your password must contain at least 8 characters.' %}</li>
+                <li>{% trans "Your password can't be entirely numeric." %}</li>
+            </ul>
+            {% if form.password2.errors %}
+                <p class="password_container2 alert_error">
+                    {% for error in form.password2.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                </p>
+            {% else %}
+                <p class="password_container2">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                </p>
+            {% endif %}
+            <button type="submit">{% trans 'Sign Up' %}</button>
+        </form>
+    </div>
+    <p class="sign_up">
+        {% blocktrans %}
+            <span>Already have an account?</span>
+            <a href="{{ login_url }}">Sign in</a>
+        {% endblocktrans %}
+    </p>
+{% endblock %}

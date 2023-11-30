@@ -1,0 +1,25 @@
+.separator_container {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 20px;
+    margin-bottom: 20px;
+    border: none;
+}
+
+.separator_container .line {
+    border-top: 1px solid #04325f;
+    height: 1px;
+    width: 42.5%;
+}
+
+.separator_container .or {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 15%;
+    height: 20px;
+    font-size: 16px;
+}

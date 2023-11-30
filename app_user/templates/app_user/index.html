@@ -1,9 +1,17 @@
 {% extends 'app_user/index_page_layout.html' %}
 {% load static %}
-{% load custom_filters %}
+{% load socialaccount %}
 
 {% block title %}
     Tessco blog
+{% endblock %}
+
+{% block article_stylesheet %}
+    <link href="{% static 'app_user/css/articles.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block spinner_stylesheet %}
+    <link href="{% static 'app_user/css/spinner.css' %}" rel="stylesheet">
 {% endblock %}
 
 {% block footer_stylesheet %}
@@ -37,23 +45,27 @@
         </div>
         <div class="menu-socials">
             <span> Contact us: </span>
-            <ul>
-                <li><a href="mailto:tesscoblog@gmail.com">Email</a></li>
-                <li><a href="https:twitter.com">Twitter</a></li>
-                <li><a href="https:facebook.com">Facebook</a></li>
-            </ul>
+            <nav>
+                <ul>
+                    <li><a href="mailto:tesscoblog@gmail.com">Email</a></li>
+                    <li><a href="https:twitter.com">Twitter</a></li>
+                    <li><a href="https:facebook.com">Facebook</a></li>
+                </ul>
+            </nav>
         </div>
         <div class="others">
-            <div>
-                <span> Others: </span>
-                <span> Advertise with us </span>
-                <span> Complaints & corrections </span>
-                <span> Privacy policy </span>
-                <span> Terms and conditions </span>
-            </div>
+            <span> Others: </span>
+            <nav>
+                <ul>
+                    <li><a> Advertise with us </a></li>
+                    <li><a> Complaints & corrections </a></li>
+                    <li><a> Privacy policy </a></li>
+                    <li><a> Terms and conditions </a></li>
+                </ul>
+            </nav>>
         </div>
     </div>
-    <a class="sign-in">Sign in</a>
+    <a href="{% url 'account_login' %}" class="sign-in">Sign In</a>
     <div class="overlay"></div>
 {% endblock %}
 
@@ -72,36 +84,33 @@
 {% endblock %}
 
 {% block active_articles %}
-    {% for article in articles %}
         <div class="each-article-container">
             <div class="each-article">
                 <a class="article-link">
                     <div class="article-image-title">
                         <div class="image">
-                            <img src="{{ article.thumbnail.url }}" alt="{{ article.title }}">
+                            <img src="{{ article.thumbnail.url }}" loading="lazy">
                         </div>
                         <div class="article-title">
-                            <span>{{ article.category.name}}</span>
-                            <span>{{ article.title }}</span>
+                            <span></span>
+                            <span></span>
                         </div>
                     </div>
                     <div class="article-performance">
                         <div class="like">
-                            <img class="article-like" src="{% static 'app_user/img/like.png' %}" alt="Like">
+                            <img class="article-like" src="{% static 'app_user/img/like.png' %}">
                             <div> 20 </div>
                         </div>
                         <div class="comment">
-                            <img class="article-comment" src="{% static 'app_user/img/chat-icon.png' %}" alt="Comment">
+                            <img class="article-comment" src="{% static 'app_user/img/chat-icon.png' %}">
                             <div> 20 </div>
                         </div>
                         <div class="author-time">
-                            {{ article.created_at|most_significant_timeunit }} ago
                         </div>
                     </div>
                 </a>
             </div>
         </div>
-    {% endfor %}
 {% endblock %}
 
 {% block footer %}
@@ -122,4 +131,7 @@
             <a>Terms and conditions</a>
         </div>
     </div>
+{% endblock %}
+{% block script %}
+    {{ total_pages|json_script:"total_pages_id"}}
 {% endblock %}

@@ -1,4 +1,4 @@
-@media screen and (max-width:500px) {
+@media screen and (max-width: 500px) {
     .header-container {
         display: flex;
         align-items: center;
@@ -61,6 +61,6 @@
 
     .moto i {
         color: #ffffff;
-        font-size: max(4.5vw, 13px);
+        font-size: max(4.5vw, 14px);
     }
 }

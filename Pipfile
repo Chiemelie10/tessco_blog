@@ -9,6 +9,8 @@ mysqlclient = "*"
 python-dotenv = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+python-magic-bin = "*"
+argon2-cffi = "*"
 
 [dev-packages]
 

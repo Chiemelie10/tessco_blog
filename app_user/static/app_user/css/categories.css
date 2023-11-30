@@ -42,7 +42,8 @@
     }
 
     .categories ul,
-    .menu-socials ul {
+    .menu-socials ul,
+    .others ul {
         list-style: none;
         padding: 0;
         margin: 0;
@@ -50,7 +51,7 @@
 
     .categories span,
     .menu-socials span,
-    .others div span:first-child {
+    .others span {
         display: inline-block;
         color: gold;
         font-size: min(6vw, 17px);
@@ -59,7 +60,7 @@
 
     .categories a,
     .menu-socials a,
-    .others div span:nth-child(n+2) {
+    .others a {
         text-decoration: none;
         display: block;
         color: white;

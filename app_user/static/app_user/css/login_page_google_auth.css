@@ -1,0 +1,62 @@
+@media screen and (max-width: 500px ) {
+    .google_auth {
+        display: grid;
+        align-self: center;
+        align-items: center;
+        background-color: red;
+        text-decoration: none;
+        font-size: 16px;
+        margin: 40px 0 20px 0;
+        width: 80%;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .google_auth div {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        justify-content: center;
+        align-content: center;
+        height: 40px;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .google_auth div span {
+        color: #ffffff;
+        align-self: center;
+        justify-self: center;
+        margin-right: 30px;
+    }
+
+    .google_auth div img {
+        height: 30px;
+        width: 30px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .google_auth {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 260px) {
+    .google_auth div span {
+        margin-right: 15px;
+    }
+
+    .google_auth div {
+        padding: 10px 5px;
+    }
+}
+
+@media screen and (max-width: 220px) {
+    .google_auth div span {
+        margin-right: 0;
+    }
+
+    .google_auth div {
+        padding: 10px 2px;
+    }
+}

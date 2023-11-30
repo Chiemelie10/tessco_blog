@@ -20,14 +20,7 @@
         flex-direction: column;
         color: #2a597e;
         display: none;
-    }
-
-    .each-article-container {
-        display: flex;
-        justify-content: center;
-        padding: 20px 0;
-        width: 90%;
-        border-bottom: 1px solid red;
+        margin-bottom: 60px;
     }
 
     .each-article-container {

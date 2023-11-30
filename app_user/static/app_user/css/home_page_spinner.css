@@ -6,15 +6,11 @@
     height: 25px;
     animation: spin 2s linear infinite;
     margin: auto;
-    margin-bottom: 10px;
     display: none;
+    margin-bottom: 70px;
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }

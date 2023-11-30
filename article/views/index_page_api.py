@@ -21,7 +21,7 @@ class IndexPageApi(APIView):
         page_size = request.GET.get('page-size')
 
         if not page and not page_size:
-            articles = Article.objects.filter(is_active=True).order_by('-created_at')
+            articles = Article.objects.filter(article_is_active=True).order_by('-created_at')
             serializer = ArticleModelSerializer(articles, many=True)
             return JsonResponse(serializer.data, status=200, safe=False)
 
@@ -38,7 +38,7 @@ class IndexPageApi(APIView):
             return JsonResponse({'error': 'Value of page or page size must be integer.'},
                                 status=400)
 
-        articles = Article.objects.filter(is_active=True).order_by('-created_at')
+        articles = Article.objects.filter(article_is_active=True).order_by('-created_at')
         result = paginate_queryset(articles, page, page_size)
 
         if isinstance(result, JsonResponse):

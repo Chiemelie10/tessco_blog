@@ -1,23 +1,33 @@
 footer {
     display: flex;
     justify-content: center;
+    background-color: #04325f;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: 50px;
 }
 
 .footer {
+    display: flex;
+    justify-content: space-between;
     width: 90%;
 }
 
-.footer-link-container {
+.footer a {
     display: flex;
-    justify-content: space-between;
-    margin: 0;
-    padding: 0;
-    list-style-image: url('/static/app_user/img/article.png');
-    background-color: orange;
-    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.footer a img {
+    width: 20px;
     height: 20px;
 }
 
-.footer-link-container li {
-    background-color: aqua;
+.footer a span {
+    color: #ffffff;
+    font-size: 12px;
 }
