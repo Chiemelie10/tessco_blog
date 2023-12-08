@@ -1,0 +1,16 @@
+.link-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 100%;
+}
+
+.link-container a {
+    display: inline-block;
+    width: 45%;
+}
+
+.link-container a:last-child {
+    text-align: end;
+}

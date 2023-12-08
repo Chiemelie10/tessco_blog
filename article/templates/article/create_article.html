@@ -1,0 +1,50 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tessco blog article page</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'app_user/img/tessco-blog-logo.png' %}" type="image/png" rel="icon">
+        <link href="{% static 'article/css/create_article_body.css' %}" rel="stylesheet">
+        <link href="{% static 'article/css/create_article_top_nav.css' %}" rel="stylesheet">
+        <link href="{% static 'article/css/create_article_form.css' %}" rel="stylesheet">
+        <static src="{% static 'article/js/image_upload_handler.js' %}"></static>
+        {{ form.media }}
+    </head>
+    <body>
+        <div class="link-container">
+            <a href="javascript:history.back()" class="back-link">&#9666;</a><!--&larr;-->
+            <a>Next</a>
+        </div>
+        <form method="post" enctype="multipart/form-data" action="{% url 'create-article' %}">
+            {% csrf_token %}
+            <!-- <label for="id-title">Title</label>
+            <input class="article-title" type="text" placeholder="Enter title of your article" required id="id-title">
+            <label for="id-content">Content</label>
+            <textarea class="article-content" placeholder="Content" required id="id-content"></textarea> -->
+            {{ form.category}}
+            {{ form.title }}
+            {{ form.content }}
+            {% if form.content.errors %}
+                {% for error in form.content.errors %}
+                    {{ error }}
+                {% endfor %}
+            {% endif %}
+            <ul>
+                {% for error in form.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li> {{ message }} </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <input type="submit" value="Submit" id="id_submit">
+        </form>
+    </body>
+</html>

@@ -1,4 +1,4 @@
-{% extends 'account/base.html' %}
+{% extends 'account/base_entrance.html' %}
 {% load i18n %}
 {% load allauth account socialaccount %}
 {% load static %}
@@ -9,6 +9,7 @@
 
 {% block extra_head %}
     <meta charset="utf-8">
+    <link href="{% static 'app_user/img/tessco-blog-logo.png' %}" type="image/png" rel="icon">
     <link href="{% static 'app_user/css/login_page_body.css' %}" rel="stylesheet">
     <link href="{% static 'app_user/css/login_page_header.css' %}" rel="stylesheet">
     <link href="{% static 'app_user/css/login_page_google_auth.css' %}" rel="stylesheet">

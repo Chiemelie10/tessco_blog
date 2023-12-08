@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // Make article container visible
         articleContainer.style.display = "flex";
 
-        const titleContainer = articleClone.querySelector(".article-title span:last-child")
-        const categoryContainer = articleClone.querySelector(".article-title span:first-child")
-        const img = articleClone.querySelector(".article-image-title .image img")
-        const timeContainer = articleClone.querySelector(".article-performance .author-time")
+        const titleContainer = articleClone.querySelector(".article-title span:last-child");
+        const categoryContainer = articleClone.querySelector(".article-title span:first-child");
+        const img = articleClone.querySelector(".article-image-title .image img");
+        const timeContainer = articleClone.querySelector(".article-performance .author-time");
 
         titleContainer.textContent = article.title;
         categoryContainer.textContent = article.category_name;
@@ -37,18 +37,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         img.loading = "lazy";
         img.style.opacity = 0; // Hide image to avoid displaying until fully loaded
-        img.src = article.thumbnail;
 
-        // Display image after it is fully loaded.
-        function loaded() {
-            img.style.opacity = 1;
-        }
+        if (article.thumbnail !== null) {
+            img.src = article.thumbnail;
+            // Display image after it is fully loaded.
+            function loaded() {
+                img.style.opacity = 1;
+            }
 
-        // Check if image has finished loading
-        if (img.complete) {
-            loaded()
-        } else {
-            img.addEventListener("load", loaded)
+            // Check if image has finished loading
+            if (img.complete) {
+                loaded()
+            } else {
+                img.addEventListener("load", loaded)
+            }
         }
 
         fragment.appendChild(articleClone);
@@ -67,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         isLoadingPosts = true;
 
-        url = `http://127.0.0.1:8000/api/articles/?page=${currentPage}&page-size=${pageSize}`;
+        url = `/api/articles/?page=${currentPage}&page-size=${pageSize}`;
         fetch(url, { signal })
             .then((response) => {
                 if (!response.ok) {
@@ -78,13 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((data) => {
                 data.articles.forEach((article) => {
                     const timeDifference = moment(article.created_at).fromNow();
-
-                    if (timeDifference.startsWith('a')) {
-                        const modifiedString = '1' + timeDifference.slice(1);
-                        article.created_at = modifiedString;
-                    } else {
-                        article.created_at = timeDifference;
-                    }
+                    article.created_at = timeDifference;
 
                     createEachArticleContainer(article);
                     articleContainer.appendChild(fragment);
@@ -129,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         window.addEventListener("scroll", function () {
             const {scrollTop, clientHeight, scrollHeight} = document.documentElement;
-            if ((scrollTop + clientHeight >= scrollHeight) && !isLoadingPosts) {
+            if ((scrollTop + clientHeight + 400 >= scrollHeight) && !isLoadingPosts) {
                 isLoadingPosts = true;
                 loader.style.display = "block";
                 fetchArticles(currentPage, pageSize);

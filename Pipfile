@@ -11,6 +11,11 @@ djangorestframework = "*"
 django-cors-headers = "*"
 python-magic-bin = "*"
 argon2-cffi = "*"
+django-tinymce = "*"
+pillow = "*"
+beautifulsoup4 = "*"
+bleach = "*"
+lxml = "*"
 
 [dev-packages]
 

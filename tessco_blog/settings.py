@@ -59,7 +59,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google'
+    'allauth.socialaccount.providers.google',
+    # add tinymce
+    'tinymce',
 ]
 
 # google allauth setup from line 64 - 73
@@ -83,6 +85,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+]
+
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    #"django.contrib.auth.hashers.PBKDF2PasswordHasher",
 ]
 
 ROOT_URLCONF = 'tessco_blog.urls'
@@ -160,6 +167,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATICFILES_DIR = path.join(BASE_DIR, 'static')
+STATIC_ROOT = path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -171,34 +180,157 @@ AUTH_USER_MODEL = 'app_user.User'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = path.join(BASE_DIR, 'media')
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000'
+]
 
-# google allauth setup from line 172 - 180
-
+# google allauth setup
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
 )
 
-# GET_FORM_CLASS = 'app_user.forms.UserModelForm'
+# django-allauth settings
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+# ACCOUNT_USERNAME_BLACKLIST = []
+# ACCOUNT_SESSION_REMEMBER = None
+# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
+# ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_UNIQUE_EMAIL = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_REQUIRED = True 
 
-AUTHENTICATION_METHOD = 'username'
+# signs in users that logged using django-allauth without showing the google warning page.
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+LOGIN_REDIRECT_URL = '/home'
+LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_ADAPTER = 'app_user.adapters.CustomAccountAdapter'
 
 # ACCOUNT_FORMS = {
 #     #'signup': 'app_user.forms.UserModelForm',
 #     'login': 'app_user.forms.UserModelForm',
 # }
 
-# signs in users that logged using django-allauth without showing the google warning page. 
-SOCIALACCOUNT_LOGIN_ON_GET = True
-
-LOGIN_REDIRECT_URL = '/home'
-LOGOUT_REDIRECT_URL = '/'
-
 #SESSION_COOKIE_SECURE = True
 #SESSION_COOKIE_AGE = 1209600
 
-PASSWORD_HASHERS = [
-    "django.contrib.auth.hashers.Argon2PasswordHasher",
-    #"django.contrib.auth.hashers.PBKDF2PasswordHasher",
-]
+
+# tinymce settings
+# anchor pagebreak media
+# toolbar1: underline strikethrough
+# if (meta.filetype == "media") {
+        # input.setAttribute("accept", "video/*");
+    # }
+
+TINYMCE_DEFAULT_CONFIG = {
+    'cleanup_on_startup': True,
+    'custom_undo_redo_levels': 20,
+    'selector': 'textarea',
+    'height': '400',
+    'theme': 'silver',
+    'plugins': '''
+            save link image media preview codesample
+            table code lists fullscreen insertdatetime nonbreaking
+            directionality searchreplace wordcount visualblocks
+            visualchars code fullscreen autolink lists charmap print hr
+            ''',
+    'toolbar1': '''
+            undo redo | fullscreen preview bold italic | link image | alignleft alignright |
+            aligncenter alignjustify | bullist numlist | fontsizeselect | codesample | code
+            ''',
+    # 'toolbar2': '''
+    #         visualblocks visualchars |
+    #         charmap hr pagebreak nonbreaking anchor |  code |
+    #         ''',
+    'contextmenu': 'formats | link image',
+    'menubar': True,
+    'statusbar': True,
+
+    # 'images_upload_url': 'api/images',
+    #'images_reuse_filename': True,
+    'automatic_uploads': False, #
+    'block_unsupported_drop': True,
+    'file_picker_types': 'image',
+    'images_file_types': 'jpeg, jpg, png, webp, jpe, jfi, jif, jfif',
+    'images_upload_credentials': True,
+    # Ensure uploaded images are responsive
+    'image_dimensions': True, 'image_class_list': [{'title': 'Responsive', 'value': 'img-fluid'}],
+
+    # Without this, the local image upload tab will not show
+    "file_picker_callback": '''
+        function (cb, value, meta) {
+            var input = document.createElement("input");
+            input.setAttribute("type", "file");
+            if (meta.filetype == "image") {
+                input.setAttribute("accept", "image/*");
+            }
+            input.onchange = function () {
+                var file = this.files[0];
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var id = "blobid" + (new Date()).getTime();
+                    var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                    var base64 = reader.result.split(",")[1];
+                    var blobInfo = blobCache.create(id, file, base64);
+                    blobCache.add(blobInfo);
+                    cb(blobInfo.blobUri(), { title: file.name });
+                };
+            reader.readAsDataURL(file);
+            };
+        input.click();
+        }
+    ''',
+
+    # imgage_upload_handler is a javascript function to handle the upload
+    'images_upload_handler': ''' function example_image_upload_handler (blobInfo, success, failure, progress) {
+        var xhr, formData;
+
+        const form = document.querySelector('form');
+        const articleFormData = new FormData(form);
+
+        xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        xhr.open('POST', 'api/images');
+
+        xhr.setRequestHeader('X-CSRFToken', articleFormData.get('csrfmiddlewaretoken'));
+
+        xhr.upload.onprogress = function (e) {
+        progress(e.loaded / e.total * 100);
+        };
+
+        xhr.onload = function() {
+        var json;
+
+        if (xhr.status === 403) {
+            failure('HTTP Error: ' + xhr.status, { remove: true });
+            return;
+        }
+
+        if (xhr.status < 200 || xhr.status >= 300) {
+            failure('HTTP Error: ' + xhr.status);
+            return;
+        }
+
+        json = JSON.parse(xhr.responseText);
+
+        if (!json || typeof json.location != 'string') {
+            failure('Invalid JSON: ' + xhr.responseText);
+            return;
+        }
+
+        success(json.location);
+        };
+
+        xhr.onerror = function () {
+        failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+        };
+
+        formData = new FormData();
+        formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+        xhr.send(formData);
+    }
+    '''
+}

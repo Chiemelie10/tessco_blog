@@ -38,7 +38,7 @@
             <nav>
                 <ul>
                     {% for category in categories %}
-                    <li><a>{{ category.name }}</a></li>
+                    <li><a>{{ category.name|safe }}</a></li>
                     {% endfor %}
                 </ul>
             </nav>
@@ -48,8 +48,8 @@
             <nav>
                 <ul>
                     <li><a href="mailto:tesscoblog@gmail.com">Email</a></li>
-                    <li><a href="https:twitter.com">Twitter</a></li>
-                    <li><a href="https:facebook.com">Facebook</a></li>
+                    <li><a href="https://twitter.com">Twitter</a></li>
+                    <li><a href="https://facebook.com">Facebook</a></li>
                 </ul>
             </nav>
         </div>
@@ -89,7 +89,7 @@
                 <a class="article-link">
                     <div class="article-image-title">
                         <div class="image">
-                            <img src="{{ article.thumbnail.url }}" loading="lazy">
+                            <img>
                         </div>
                         <div class="article-title">
                             <span></span>

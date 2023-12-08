@@ -4,7 +4,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.http import JsonResponse
 from rest_framework.views import APIView
 from article.models import Article
-from article.serializers import ArticleModelSerializer
+from article.serializers import IndexPageSerializer
 from article.util import paginate_queryset
 
 
@@ -22,7 +22,7 @@ class IndexPageApi(APIView):
 
         if not page and not page_size:
             articles = Article.objects.filter(article_is_active=True).order_by('-created_at')
-            serializer = ArticleModelSerializer(articles, many=True)
+            serializer = IndexPageSerializer(articles, many=True)
             return JsonResponse(serializer.data, status=200, safe=False)
 
         if page and not page_size:
@@ -45,7 +45,7 @@ class IndexPageApi(APIView):
             return result
 
         paginated_data, total_pages = result
-        serializer = ArticleModelSerializer(paginated_data, many=True)
+        serializer = IndexPageSerializer(paginated_data, many=True)
 
         if page == 1 and page == total_pages:
             previous_page = None

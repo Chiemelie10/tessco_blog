@@ -37,7 +37,7 @@
             <nav>
                 <ul>
                     {% for category in categories %}
-                    <li><a>{{ category.name }}</a></li>
+                    <li><a>{{ category.name|safe }}</a></li>
                     {% endfor %}
                 </ul>
             </nav>
@@ -60,12 +60,12 @@
                     <li><a> Complaints & corrections </a></li>
                     <li><a> Privacy policy </a></li>
                     <li><a> Terms and conditions </a></li>
-                    <li><a href="{% url 'logout' %}?next=/"> Logout </a></li>
+                    <li><a href="{% url 'account_logout' %}"> Logout </a></li>
                 </ul>
             </nav>
         </div>
     </div>
-    <a class="sign-in">Hi {{ user.username|truncatechars:15 }}</a>
+    <a class="sign-in">Hi {{ user.username|truncatechars:15|safe }}</a>
     <div class="overlay"></div>
 {% endblock %}
 
@@ -89,7 +89,7 @@
             <a class="article-link">
                 <div class="article-image-title">
                     <div class="image">
-                        <img src="{{ article.thumbnail.url }}" class="lazy">
+                        <img>
                     </div>
                     <div class="article-title">
                         <span></span>

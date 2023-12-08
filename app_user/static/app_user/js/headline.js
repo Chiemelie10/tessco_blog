@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function fetchHeadline() {
-        url = "http://127.0.0.1:8000/api/articles/headlines";
+        url = "/api/articles/headlines";
         fetch(url)
             .then((response) => {
                 if (!response.ok) {

@@ -1,4 +1,4 @@
-{% extends 'account/base.html' %}
+{% extends 'account/base_entrance.html' %}
 {% load i18n %}
 {% load allauth account socialaccount %}
 {% load static %}
@@ -9,6 +9,7 @@
 
 {% block extra_head %}
     <meta charset="utf-8">
+    <link href="{% static 'app_user/img/tessco-blog-logo.png' %}" type="image/png" rel="icon">
     <link href="{% static 'app_user/css/login_page_body.css' %}" rel="stylesheet">
     <link href="{% static 'app_user/css/login_page_header.css' %}" rel="stylesheet">
     <link href="{% static 'app_user/css/login_page_google_auth.css' %}" rel="stylesheet">
@@ -36,55 +37,64 @@
         <div class="line"></div>
     </div>
     <div class="login_form">
-        <form method="post" action="{% url 'account_login' %}">
-            {% csrf_token %}
-            {% if form.non_field_errors %}
-                <div class="alert_non_field_error">
-                    {% for error in form.non_field_errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% endif %}
-            {% if form.login.errors %}
-                <p class="username_container alert_error">
-                    {% for error in form.login.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
-                    {{ form.login.label_tag}}
-                    {{ form.login }}
+        {% element form form=form method="post" action=account_login %}
+            {% slot body %}
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert_non_field_error">
+                        {% for error in form.non_field_errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if form.login.errors %}
+                    <p class="username_container alert_error">
+                        {% for error in form.login.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                        {{ form.login.label_tag}}
+                        {{ form.login }}
+                    </p>
+                {% else %}
+                    <p class="username_container">
+                        {{ form.login.label_tag}}
+                        {{ form.login }}
+                    </p>
+                {% endif %}
+                {% if form.password.errors %}
+                    <p class="password_container alert_error">
+                        {% for error in form.password.errors %}
+                            <span class="display_error">{{ error }}</span>
+                        {% endfor %}
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                        <span class="helptext">
+                            <a href="{% url 'account_reset_password' %}">{% trans 'Forgot your password?' %}</a>
+                        </span>
+                    </p>
+                {% else %}
+                    <p class="password_container">
+                        {{ form.password.label_tag }}
+                        {{ form.password }}
+                        <span class="helptext">
+                            <a href="{% url 'account_reset_password' %}">{% trans 'Forgot your password?' %}</a>
+                        </span>
+                    </p>
+                {% endif %}
+                <p class="remember_me_container">
+                    {{ form.remember.label_tag }}
+                    {{ form.remember }}
                 </p>
-            {% else %}
-                <p class="username_container">
-                    {{ form.login.label_tag}}
-                    {{ form.login }}
-                </p>
-            {% endif %}
-            {% if form.password.errors %}
-                <p class="password_container alert_error">
-                    {% for error in form.password.errors %}
-                        <span class="display_error">{{ error }}</span>
-                    {% endfor %}
-                    {{ form.password.label_tag }}
-                    {{ form.password }}
-                    <span class="helptext">
-                        <a href="{% url 'account_reset_password' %}">{% trans 'Forgot your password?' %}</a>
-                    </span>
-                </p>
-            {% else %}
-                <p class="password_container">
-                    {{ form.password.label_tag }}
-                    {{ form.password }}
-                    <span class="helptext">
-                        <a href="{% url 'account_reset_password' %}">{% trans 'Forgot your password?' %}</a>
-                    </span>
-                </p>
-            {% endif %}
-            <p class="remember_me_container">
-                {{ form.remember.label_tag }}
-                {{ form.remember }}
-            </p>
-            <button type="submit">{% trans 'Sign In' %}</button>
-        </form>
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }} value={{ redirect_field_value }}"/>
+                {% endif %}
+            {% endslot %}
+            {% slot actions %}
+                {% element button type="submit" %}
+                    {% trans 'Sign In' %}
+                {% endelement %}
+            {% endslot %}
+        {% endelement %}
     </div>
     <p class="sign_up">
         <span>{% trans 'New here? ' %}</span>

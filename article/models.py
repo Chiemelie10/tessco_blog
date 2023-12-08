@@ -2,10 +2,18 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from category.models import Category
-from image.models import Image
+# from image.models import Image
+from tinymce.models import HTMLField
+# from ckeditor_uploader.fields import RichTextUploadingField
 
 
 User = get_user_model()
+
+PUBLISHED_CHOICES = (
+    ('Pending', 'Pending'),
+    ('Published', 'Published'),
+    ('Rejected', 'Rejected')
+)
 
 class Article(models.Model):
     """This class defines the columns od the articles table in the database."""
@@ -13,12 +21,13 @@ class Article(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
                                  related_name='articles', null=True)
     title = models.CharField(max_length=100)
-    content = models.TextField()
+    content = HTMLField()
     is_headline = models.BooleanField(default=False)
+    is_published = models.CharField(max_length=10, choices=PUBLISHED_CHOICES, default='Pending')
     article_is_active = models.BooleanField(default=True)
-    thumbnail = models.FileField(upload_to='article-thumbnail')
-    images = models.ForeignKey(Image, on_delete=models.SET_NULL,
-                               related_name='articles', blank=True, null=True)
+    thumbnail = models.CharField(max_length=200)
+    # images = models.ForeignKey(Image, on_delete=models.SET_NULL,
+    #                            related_name='articles', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
