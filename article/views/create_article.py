@@ -1,7 +1,6 @@
 """This module defines class SubmitArticle."""
 import os
 import logging
-from django import forms
 from django.conf import settings
 # from django.core.files.base import ContentFile
 from django.views import View
@@ -9,7 +8,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
-from article.forms import CreateArticleForm, SubmitArticleForm
+from article.forms import ArticleForm
 from article.models import Article
 from image.models import Image
 
@@ -22,7 +21,7 @@ class CreateArticleView(LoginRequiredMixin, View):
 
     def get(self, request):
         """This method renders the page for creating new articles."""
-        form = CreateArticleForm()
+        form = ArticleForm()
         return render(request, self.template_name, {'form': form}, status=200)
 
     def post(self, request):
@@ -30,7 +29,7 @@ class CreateArticleView(LoginRequiredMixin, View):
         # pylint: disable=no-member
         # pylint: disable=broad-exception-caught
 
-        form = SubmitArticleForm(request.POST)
+        form = ArticleForm(request.POST)
 
         if form.is_valid():
             cleaned_data = form.cleaned_data
@@ -41,8 +40,6 @@ class CreateArticleView(LoginRequiredMixin, View):
             user_img_without_articles = Image.objects.filter(article_id=None, user=request.user)
 
             thumbnail_url_path = image_src_list[0]
-            if len(thumbnail_url_path) > 200:
-                raise forms.ValidationError('File name is too long.')
 
             for unlinked_image in user_img_without_articles:
                 unlinked_image_path = str(unlinked_image.file)

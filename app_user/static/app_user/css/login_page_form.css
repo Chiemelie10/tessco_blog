@@ -76,6 +76,11 @@ form button {
     border-radius: 5px;
 }
 
+form button:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
 @media screen and (max-width: 320px) {
     .password_container .helptext {
         font-size: 14px;

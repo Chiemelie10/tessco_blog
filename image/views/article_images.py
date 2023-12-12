@@ -25,19 +25,16 @@ class ImageUploadView(APIView):
 
         if serializer.is_valid():
             validated_data = serializer.validated_data
+            validated_data['user'] = request.user
+
             image = Image(**validated_data)
-            image.user = request.user
             image.save()
 
             serializer = ImageModelSerializer(image)
             path = serializer.data.get('file')
             current_domain = get_current_site(request)
-            print(current_domain.domain)
-
-            if current_domain.domain in ("localhost", '127.0.0.1'):
-                url = f"http://{current_domain.domain}:8000{path}"
-            else:
-                url = f"https://{current_domain.domain}{path}"
+            url = f'{current_domain}{path}'
+            print(url)
 
             return Response({'location': url }, status=status.HTTP_201_CREATED)
 

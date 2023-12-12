@@ -24,6 +24,8 @@ def get_image_src(html_field):
     """This method counts the number of "img" tags in tinymce HTMLField."""
     soup = BeautifulSoup(html_field, 'lxml')
     img_tags = soup.find_all('img')
+    text = soup.get_text(separator=" ")
+    num_of_words = len(text.split())
 
     img_src = []
 
@@ -32,4 +34,4 @@ def get_image_src(html_field):
         if src:
             img_src.append(src)
 
-    return img_src
+    return img_src, num_of_words

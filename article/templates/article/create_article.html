@@ -10,40 +10,75 @@
         <link href="{% static 'article/css/create_article_body.css' %}" rel="stylesheet">
         <link href="{% static 'article/css/create_article_top_nav.css' %}" rel="stylesheet">
         <link href="{% static 'article/css/create_article_form.css' %}" rel="stylesheet">
-        <static src="{% static 'article/js/image_upload_handler.js' %}"></static>
+        <link href="{% static 'article/css/create_article_content_field.css' %}" rel="stylesheet">
+        <link href="{% static 'article/css/create_article_error_display.css' %}" rel="stylesheet">
+        <link href="{% static 'article/css/create_article_frontend_error_display.css' %}" rel="stylesheet">
+        <script src="{% static 'article/js/create_article_backend_error_display.js' %}"></script>
+        <script src="{% static 'article/js/create_article_frontend_error_display.js' %}"></script>
         {{ form.media }}
     </head>
     <body>
-        <div class="link-container">
-            <a href="javascript:history.back()" class="back-link">&#9666;</a><!--&larr;-->
-            <a>Next</a>
-        </div>
+        <nav class="link-container">
+            <div class="styling-container">
+                <a href="javascript:history.back()" class="back-link">&#9666;</a><!--&larr;-->
+            </div>
+        </nav>
         <form method="post" enctype="multipart/form-data" action="{% url 'create-article' %}">
             {% csrf_token %}
-            <!-- <label for="id-title">Title</label>
-            <input class="article-title" type="text" placeholder="Enter title of your article" required id="id-title">
-            <label for="id-content">Content</label>
-            <textarea class="article-content" placeholder="Content" required id="id-content"></textarea> -->
-            {{ form.category}}
-            {{ form.title }}
-            {{ form.content }}
-            {% if form.content.errors %}
-                {% for error in form.content.errors %}
-                    {{ error }}
-                {% endfor %}
+            {% if form.category.errors %}
+                <p class="category_container alert_error">
+                    {{ form.category.label_tag}}
+                    {{ form.category}}
+                    {% for error in form.category.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </p>
+            {% else %}
+                <p class="category_container">
+                    {{ form.category.label_tag}}
+                    {{ form.category}}
+                    <span class="category_frontend_error_alert">Please select a category from the list</span>
+                </p>
             {% endif %}
-            <ul>
-                {% for error in form.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-            {% if messages %}
-                <ul class="messages">
+            {% if form.title.errors %}
+                <p class="title_container alert_error">
+                    {{ form.title.label_tag}}
+                    {{ form.title }}
+                    {% for error in form.title.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </p>
+            {% else %}
+                <p class="title_container">
+                    {{ form.title.label_tag}}
+                    {{ form.title }}
+                    <span class="title_frontend_error_alert">Please fill out this field</span>
+                </p>
+            {% endif %}
+            {% if form.content.errors %}
+                <p class="content_container alert_error">
+                    {{ form.content.label_tag}}
+                    {{ form.content }}
+                    {% for error in form.content.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </p>
+            {% else %}
+                <p class="content_container">
+                    {{ form.content.label_tag}}
+                    {{ form.content }}
+                    <span class="content_frontend_error_alert">Number of words must be at least 150</span>
+                    <span class="no_img_error_alert">Please enter a thumbnail for the article</span>
+                    <span class="excess_img_error_alert">Images must not exceed 3</span>
+                </p>
+            {% endif %}
+            <!-- {% if messages %}
+                <ul class="display_messages">
                     {% for message in messages %}
                         <li> {{ message }} </li>
                     {% endfor %}
                 </ul>
-            {% endif %}
+            {% endif %} -->
             <input type="submit" value="Submit" id="id_submit">
         </form>
     </body>

@@ -198,8 +198,8 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 # ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
 # ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_UNIQUE_EMAIL = True
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ACCOUNT_EMAIL_REQUIRED = True 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_EMAIL_REQUIRED = True
 
 # signs in users that logged using django-allauth without showing the google warning page.
 SOCIALACCOUNT_LOGIN_ON_GET = True
@@ -219,7 +219,7 @@ ACCOUNT_ADAPTER = 'app_user.adapters.CustomAccountAdapter'
 
 # tinymce settings
 # anchor pagebreak media
-# toolbar1: underline strikethrough
+# toolbar1: underline strikethrough fontsizeselect
 # if (meta.filetype == "media") {
         # input.setAttribute("accept", "video/*");
     # }
@@ -238,7 +238,7 @@ TINYMCE_DEFAULT_CONFIG = {
             ''',
     'toolbar1': '''
             undo redo | fullscreen preview bold italic | link image | alignleft alignright |
-            aligncenter alignjustify | bullist numlist | fontsizeselect | codesample | code
+            aligncenter alignjustify | bullist numlist | fontsizeinput |codesample | code
             ''',
     # 'toolbar2': '''
     #         visualblocks visualchars |
@@ -250,38 +250,40 @@ TINYMCE_DEFAULT_CONFIG = {
 
     # 'images_upload_url': 'api/images',
     #'images_reuse_filename': True,
-    'automatic_uploads': False, #
+    # 'automatic_uploads': False, #
     'block_unsupported_drop': True,
     'file_picker_types': 'image',
     'images_file_types': 'jpeg, jpg, png, webp, jpe, jfi, jif, jfif',
     'images_upload_credentials': True,
+    'image_caption': True,
     # Ensure uploaded images are responsive
-    'image_dimensions': True, 'image_class_list': [{'title': 'Responsive', 'value': 'img-fluid'}],
+    # 'image_dimensions': False, 'image_class_list': [{'title': 'Responsive', 'value': 'img-fluid'}],
+    'image_dimensions': False,
 
     # Without this, the local image upload tab will not show
-    "file_picker_callback": '''
-        function (cb, value, meta) {
-            var input = document.createElement("input");
-            input.setAttribute("type", "file");
-            if (meta.filetype == "image") {
-                input.setAttribute("accept", "image/*");
-            }
-            input.onchange = function () {
-                var file = this.files[0];
-                var reader = new FileReader();
-                reader.onload = function () {
-                    var id = "blobid" + (new Date()).getTime();
-                    var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                    var base64 = reader.result.split(",")[1];
-                    var blobInfo = blobCache.create(id, file, base64);
-                    blobCache.add(blobInfo);
-                    cb(blobInfo.blobUri(), { title: file.name });
-                };
-            reader.readAsDataURL(file);
-            };
-        input.click();
-        }
-    ''',
+    # "file_picker_callback": '''
+    #     function (cb, value, meta) {
+    #         var input = document.createElement("input");
+    #         input.setAttribute("type", "file");
+    #         if (meta.filetype == "image") {
+    #             input.setAttribute("accept", "image/*");
+    #         }
+    #         input.onchange = function () {
+    #             var file = this.files[0];
+    #             var reader = new FileReader();
+    #             reader.onload = function () {
+    #                 var id = "blobid" + (new Date()).getTime();
+    #                 var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+    #                 var base64 = reader.result.split(",")[1];
+    #                 var blobInfo = blobCache.create(id, file, base64);
+    #                 blobCache.add(blobInfo);
+    #                 cb(blobInfo.blobUri(), { title: file.name });
+    #             };
+    #         reader.readAsDataURL(file);
+    #         };
+    #     input.click();
+    #     }
+    # ''',
 
     # imgage_upload_handler is a javascript function to handle the upload
     'images_upload_handler': ''' function example_image_upload_handler (blobInfo, success, failure, progress) {
@@ -302,6 +304,13 @@ TINYMCE_DEFAULT_CONFIG = {
 
         xhr.onload = function() {
         var json;
+
+        if (xhr.status === 400) {
+            const errorMessage = xhr.responseText;
+            const jsonResponse = JSON.parse(errorMessage);
+            failure('Error: ' + jsonResponse["file"]);
+            return;
+        }
 
         if (xhr.status === 403) {
             failure('HTTP Error: ' + xhr.status, { remove: true });
@@ -332,5 +341,25 @@ TINYMCE_DEFAULT_CONFIG = {
 
         xhr.send(formData);
     }
-    '''
+    ''',
+    'content_css': 'static/article/css/create_article_content_field.css',
+    'setup': '''
+        function (editor) {
+            const contentErrorMessageContainer = document.querySelectorAll(".content_container span");
+            editor.on('click', () => {
+                if (contentErrorMessageContainer.length > 0) {
+                    contentErrorMessageContainer.forEach((span) => {
+                        span.style.display = "none";
+                    });
+                }
+            });
+        }
+    ''',
 }
+
+# TINYMCE_EXTRA_MEDIA = {
+#     'css': {
+#         'all': ['http://localhost:8000/static/article/css/create_article_content_field.css'],
+#     },
+#     'js': ['article/js/image_upload_handler.js'],
+# }

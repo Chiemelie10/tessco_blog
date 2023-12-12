@@ -17,12 +17,17 @@
     <link href="{% static 'app_user/css/home_page_footer.css' %}" rel="stylesheet">
 {% endblock %}
 
+{% block scroll_to_top %}
+    <link href="{% static 'app_user/js/scroll_to_top.js' %}" rel="stylesheet">
+{% endblock %}
+
 {% block header %}
     <div class="moto">
         <span> @Tessco blog </span>
         <small><i>Home for trending news</i></small>
     </div>
     <a class="sign-in">Sign in</a>
+    <a id="top"></a>
 {% endblock %}
 
 {% block menu %}
@@ -115,11 +120,11 @@
 
 {% block footer %}
     <nav class="footer">
-        <a>
+        <a class="scroll-to-top" href="#top">
             <img src="{% static 'app_user/img/triangle.png' %}">
             <span>To top</span>
         </a>
-        <a>
+        <a href="{% url 'create-article' %}">
             <img src="{% static 'app_user/img/article.png' %}">
             <span>Create</span>
         </a>
