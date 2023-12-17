@@ -23,7 +23,6 @@ class ImageModelSerializer(serializers.ModelSerializer):
         ]
 
         image_mimetype = mimetypes.guess_type(value.name)
-        print(image_mimetype)
 
         if image_mimetype[0] not in allowed_mimetypes:
             raise serializers.ValidationError('Invalid file type')

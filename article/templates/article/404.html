@@ -1,0 +1,30 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% trans 'Page Not Found' %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{% static 'app_user/img/tessco-blog-logo.png' %}" type="image/png" rel="icon">
+        <link href="{% static 'article/css/page_not_found.css' %}" rel="stylesheet">
+    </head>
+    <body>
+        <div class="position-container">
+            <p class="error-code">{% trans '404' %}</p>
+            <p class="error-message"> {% trans 'Page not found.' %} </p>
+            <p class="statement1"> {% trans "The page you were looking for doesn't exist." %} </p>
+            <p class="statement2"> {% trans 'You may have mistyped the address or the page has been moved.'%} </p>
+            {% if user.is_authenticated %}
+                <a href="{% url 'get-home-page' %}" class="homepage-link">
+                    <button>{% trans 'Back to homepage' %}</button>
+                </a>
+            {% else %}
+                <a href="{% url 'get-index-page' %}" class="homepage-link">
+                    <button>{% trans 'Back to homepage' %}</button>
+                </a>
+            {% endif %}
+        </div>
+    </body>
+</html>

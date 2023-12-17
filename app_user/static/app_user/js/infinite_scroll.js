@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let isLoadingPosts = false;
     let hasMorePages = true;
     history.scrollRestoration = 'manual';
+    const currentSite = window.location.origin;
 
     // Selection of key elements from article container
     const articleContainer = document.querySelector(".article-container");
@@ -30,10 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const categoryContainer = articleClone.querySelector(".article-title span:first-child");
         const img = articleClone.querySelector(".article-image-title .image img");
         const timeContainer = articleClone.querySelector(".article-performance .author-time");
+        const anchorTag = articleClone.querySelector(".article-link");
 
         titleContainer.textContent = article.title;
         categoryContainer.textContent = article.category_name;
         timeContainer.textContent = article.created_at;
+        if (article.slug)
+            anchorTag.href = `${currentSite}/articles/${article.slug}`;
 
         img.loading = "lazy";
         img.style.opacity = 0; // Hide image to avoid displaying until fully loaded
@@ -44,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
             function loaded() {
                 img.style.opacity = 1;
             }
-
             // Check if image has finished loading
             if (img.complete) {
                 loaded()

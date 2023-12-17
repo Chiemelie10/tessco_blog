@@ -16,7 +16,6 @@ pillow = "*"
 beautifulsoup4 = "*"
 bleach = "*"
 lxml = "*"
-django-resized = "*"
 
 [dev-packages]
 

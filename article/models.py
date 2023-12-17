@@ -1,11 +1,8 @@
 """This module defines the class Article"""
 from django.db import models
 from django.contrib.auth import get_user_model
-from category.models import Category
-# from image.models import Image
 from tinymce.models import HTMLField
-# from ckeditor_uploader.fields import RichTextUploadingField
-
+from category.models import Category
 
 User = get_user_model()
 
@@ -26,8 +23,7 @@ class Article(models.Model):
     is_published = models.CharField(max_length=10, choices=PUBLISHED_CHOICES, default='Pending')
     article_is_active = models.BooleanField(default=True)
     thumbnail = models.CharField(max_length=200)
-    # images = models.ForeignKey(Image, on_delete=models.SET_NULL,
-    #                            related_name='articles', blank=True, null=True)
+    slug = models.SlugField(max_length=120, unique=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

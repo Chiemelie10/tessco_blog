@@ -2,9 +2,18 @@
     .menu_wrapper {
         background-color: #2a597e;
         display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .menu_wrapper .style-container {
+        display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        padding: 5px 20px;
+        width: 90%;
+        padding: 5px 0;
     }
 
     .sign-in {
@@ -24,7 +33,6 @@
         min-height: 100vh;
         overflow-y: scroll;
         width: 70%;
-        top: 0;
         left: 0;
         font-weight: bold;
         display: none;
@@ -55,7 +63,8 @@
     .others span {
         display: inline-block;
         color: gold;
-        font-size: min(6vw, 17px);
+        /* font-size: min(6vw, 17px); */
+        font-size: 16px;
         margin-bottom: 10px;
     }
 
@@ -67,7 +76,8 @@
         color: white;
         overflow: hidden;
         margin-bottom: 10px;
-        font-size: min(6vw, 15px);
+        /* font-size: min(6vw, 15px); */
+        font-size: 16px;
         cursor: pointer;
     }
 
@@ -91,15 +101,6 @@
 }
 
 @media screen and (max-width: 320px) {
-    .menu_wrapper {
-        background-color: #2a597e;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding: 5px 14px;
-    }
-
     .categories a,
     .menu-socials a,
     .others div span:nth-child(n+2) {
@@ -108,7 +109,8 @@
         color: white;
         overflow: hidden;
         margin-bottom: 9px;
-        font-size: max(5vw, 14px);
+        /* font-size: max(5vw, 14px); */
+        font-size: 16px;
         cursor: pointer;
     }
 
@@ -118,6 +120,7 @@
         display: inline-block;
         color: gold;
         font-size: max(5vw, 17px);
+        font-size: 16px;
         margin-bottom: 8px;
     }
 

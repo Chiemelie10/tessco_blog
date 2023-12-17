@@ -1,0 +1,63 @@
+@media screen and (max-width: 500px) {
+    #tinymce {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0 30px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14pt;
+        font-size: 16px;
+        overflow-x: hidden;
+        line-height: 1.5;
+    }
+
+    #tinymce p {
+        margin: 20px 0;
+    }
+
+    /* #tinymce table {
+        margin: 10px 0;
+        align-self: center;
+        font-size: 13pt;
+        max-width: 100%;
+    } */
+
+    #tinymce pre {
+        margin: 20px 0;
+        font-size: 16px;
+    }
+
+    #tinymce .image {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-self: center;
+        margin: 20px 0;
+    }
+
+    #tinymce img {
+        display: block;
+        width: 100%;
+        max-width: 480px;
+        object-fit: cover;
+        max-height: 250px;
+        min-height: 150px;
+        align-self: center;
+    }
+
+    #tinymce ul, ol {
+        margin: 0 0 10px 35px;
+        padding: 0;
+    }
+
+    #tinymce ul li, ol li {
+        margin: 0 0 10px 0;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    #tinymce {
+        font-size: 14pt;
+        font-size: 16px;
+    }
+}

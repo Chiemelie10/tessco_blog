@@ -1,19 +1,40 @@
+{% load static %}
+{% load i18n %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title>Tessco blog article page</title>
+        <title>{% trans 'Tessco blog article page' %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{% static 'app_user/img/tessco-blog-logo.png' %}" type="image/png" rel="icon">
         <link href="{% static 'article/css/create_article_body.css' %}" rel="stylesheet">
         <link href="{% static 'article/css/create_article_top_nav.css' %}" rel="stylesheet">
+        <link href="{% static 'article/css/display_article_title_content.css' %}" rel="stylesheet">
+        <link href="{% static 'article/css/prism.css' %}" rel="stylesheet">
     </head>
     <body>
-        <div class="title"></div>
-        <div class="content"></div>
+        <nav class="link-container">
+            <div class="styling-container">
+                <a href="javascript:history.back()" class="back-link">&#9666;</a><!--&larr;-->
+            </div>
+        </nav>
+        <div class="title">
+            <p>
+                {{ article.title }}
+            </p>
+        </div>
+        <div class="content line-numbers">
+            <p class="author">
+                <span>{{article.user.username}} - </span>
+                <span>{{article.created_at}}</span>
+            </p>
+            {{ article.content|safe }}
+        </div>
         <div class="reaction"></div>
         <div class="write-comment"></div>
         <div class="related-articles"></div>
         <div class="display-comments"></div>
+        <script src="{% static 'article/js/prism.js' %}"></script>
     </body>
 </html>

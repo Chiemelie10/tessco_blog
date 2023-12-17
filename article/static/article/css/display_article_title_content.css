@@ -1,0 +1,72 @@
+.title {
+    width: 90%;
+    align-self: center;
+}
+
+.title p {
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.content {
+    width: 90%;
+    align-self: center;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.content .author {
+    width: 100%;
+    align-self: center;
+    font-size: 16px;
+    margin: 0;
+    padding-bottom: 16px;
+}
+
+.content .author span:last-child {
+    color: gray;
+}
+
+.content figure {
+    width: 100%;
+    padding: 16px 0;
+    margin: 0;
+}
+
+.content figure img {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.content figure figcaption {
+    padding-top: 10px;
+}
+
+.content p img {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    padding: 16px 0;
+}
+
+.content ol,
+.content ul {
+    margin: 16px 0;
+}
+
+.content ul li,
+.content ol li {
+    margin: 1px 0;
+}
+
+.content .code-toolbar {
+    padding: 16px 0;
+}
+
+/* .content pre code {
+    margin-top: 30px;
+    padding-bottom: 20px;
+} */

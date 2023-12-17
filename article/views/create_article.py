@@ -1,4 +1,4 @@
-"""This module defines class SubmitArticle."""
+"""This module defines class CreateArticleView."""
 import os
 import logging
 from django.conf import settings
@@ -36,7 +36,11 @@ class CreateArticleView(LoginRequiredMixin, View):
             cleaned_data['user'] = request.user
             article = Article(**cleaned_data)
 
-            _, image_src_list = cleaned_data.get('content')
+            content, image_src_list = cleaned_data.get('content')
+            content = content.replace('\r\n', '\n')
+            article.content = content
+
+
             user_img_without_articles = Image.objects.filter(article_id=None, user=request.user)
 
             thumbnail_url_path = image_src_list[0]

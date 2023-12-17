@@ -31,47 +31,49 @@
 {% endblock %}
 
 {% block menu %}
-    <div class="menu-toggle">
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
+    <div class="style-container">
+        <div class="menu-toggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="menu">
+            <div class="categories">
+                <span> Categories: </span>
+                <nav>
+                    <ul>
+                        {% for category in categories %}
+                        <li><a>{{ category.name|safe }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="menu-socials">
+                <span> Contact us: </span>
+                <nav>
+                    <ul>
+                        <li><a href="mailto:tesscoblog@gmail.com">Email</a></li>
+                        <li><a href="https:twitter.com">Twitter</a></li>
+                        <li><a href="https:facebook.com">Facebook</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="others">
+                <span> Others: </span>
+                <nav>
+                    <ul>
+                        <li><a> Advertise with us </a></li>
+                        <li><a> Complaints & corrections </a></li>
+                        <li><a> Privacy policy </a></li>
+                        <li><a> Terms and conditions </a></li>
+                        <li><a href="{% url 'account_logout' %}"> Logout </a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <a class="sign-in">Hi {{ user.username|truncatechars:15|safe }}</a>
+        <div class="overlay"></div>
     </div>
-    <div class="menu">
-        <div class="categories">
-            <span> Categories: </span>
-            <nav>
-                <ul>
-                    {% for category in categories %}
-                    <li><a>{{ category.name|safe }}</a></li>
-                    {% endfor %}
-                </ul>
-            </nav>
-        </div>
-        <div class="menu-socials">
-            <span> Contact us: </span>
-            <nav>
-                <ul>
-                    <li><a href="mailto:tesscoblog@gmail.com">Email</a></li>
-                    <li><a href="https:twitter.com">Twitter</a></li>
-                    <li><a href="https:facebook.com">Facebook</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="others">
-            <span> Others: </span>
-            <nav>
-                <ul>
-                    <li><a> Advertise with us </a></li>
-                    <li><a> Complaints & corrections </a></li>
-                    <li><a> Privacy policy </a></li>
-                    <li><a> Terms and conditions </a></li>
-                    <li><a href="{% url 'account_logout' %}"> Logout </a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-    <a class="sign-in">Hi {{ user.username|truncatechars:15|safe }}</a>
-    <div class="overlay"></div>
 {% endblock %}
 
 {% block headline %}
@@ -79,10 +81,10 @@
         <div class="each-headline-container">
             <div class="headline-image-container">
                 <img class="headline-image">
-            </div>
-            <div class="headline-category-title">
-                <span></span>
-                <span></span>
+                <div class="headline-category-title">
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
     </a>

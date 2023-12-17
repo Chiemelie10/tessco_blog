@@ -14,7 +14,6 @@ from pathlib import Path
 from os import getenv, path
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -30,7 +29,7 @@ SECRET_KEY = getenv('TESSCOBLOG_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -218,7 +217,7 @@ ACCOUNT_ADAPTER = 'app_user.adapters.CustomAccountAdapter'
 
 
 # tinymce settings
-# anchor pagebreak media
+# anchor pagebreak media code
 # toolbar1: underline strikethrough fontsizeselect
 # if (meta.filetype == "media") {
         # input.setAttribute("accept", "video/*");
@@ -231,21 +230,21 @@ TINYMCE_DEFAULT_CONFIG = {
     'height': '400',
     'theme': 'silver',
     'plugins': '''
-            save link image media preview codesample
-            table code lists fullscreen insertdatetime nonbreaking
+            save link image preview
+            lists fullscreen insertdatetime nonbreaking
             directionality searchreplace wordcount visualblocks
-            visualchars code fullscreen autolink lists charmap print hr
+            visualchars autolink charmap hr codesample
             ''',
     'toolbar1': '''
             undo redo | fullscreen preview bold italic | link image | alignleft alignright |
-            aligncenter alignjustify | bullist numlist | fontsizeinput |codesample | code
+            aligncenter alignjustify | bullist numlist | fontsizeinput | codesample
             ''',
     # 'toolbar2': '''
     #         visualblocks visualchars |
     #         charmap hr pagebreak nonbreaking anchor |  code |
     #         ''',
     'contextmenu': 'formats | link image',
-    'menubar': True,
+    'menubar': False,
     'statusbar': True,
 
     # 'images_upload_url': 'api/images',
@@ -256,9 +255,16 @@ TINYMCE_DEFAULT_CONFIG = {
     'images_file_types': 'jpeg, jpg, png, webp, jpe, jfi, jif, jfif',
     'images_upload_credentials': True,
     'image_caption': True,
-    # Ensure uploaded images are responsive
-    # 'image_dimensions': False, 'image_class_list': [{'title': 'Responsive', 'value': 'img-fluid'}],
     'image_dimensions': False,
+
+    # manual codesample configuration
+    # 'codesample_global_prismjs': True,
+    # 'codesample_content_css': 'http://localhost:8000/article/static/article/css/prism.css',
+
+    # 'forced_root_block': 'p',
+    # 'newline_behavior': '',
+    # 'newline_behavior': 'linebreak',
+    # 'remove_trailing_brs': False,
 
     # Without this, the local image upload tab will not show
     # "file_picker_callback": '''
@@ -286,63 +292,64 @@ TINYMCE_DEFAULT_CONFIG = {
     # ''',
 
     # imgage_upload_handler is a javascript function to handle the upload
-    'images_upload_handler': ''' function example_image_upload_handler (blobInfo, success, failure, progress) {
-        var xhr, formData;
+    'images_upload_handler': '''
+        function example_image_upload_handler (blobInfo, success, failure, progress) {
+            var xhr, formData;
 
-        const form = document.querySelector('form');
-        const articleFormData = new FormData(form);
+            const form = document.querySelector('form');
+            const articleFormData = new FormData(form);
 
-        xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        xhr.open('POST', 'api/images');
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.open('POST', `${window.location.origin}/api/images`);
 
-        xhr.setRequestHeader('X-CSRFToken', articleFormData.get('csrfmiddlewaretoken'));
+            xhr.setRequestHeader('X-CSRFToken', articleFormData.get('csrfmiddlewaretoken'));
 
-        xhr.upload.onprogress = function (e) {
-        progress(e.loaded / e.total * 100);
-        };
+            xhr.upload.onprogress = function (e) {
+            progress(e.loaded / e.total * 100);
+            };
 
-        xhr.onload = function() {
-        var json;
+            xhr.onload = function() {
+            var json;
 
-        if (xhr.status === 400) {
-            const errorMessage = xhr.responseText;
-            const jsonResponse = JSON.parse(errorMessage);
-            failure('Error: ' + jsonResponse["file"]);
-            return;
+            if (xhr.status === 400) {
+                const errorMessage = xhr.responseText;
+                const jsonResponse = JSON.parse(errorMessage);
+                failure('Error: ' + jsonResponse["file"]);
+                return;
+            }
+
+            if (xhr.status === 403) {
+                failure('HTTP Error: ' + xhr.status, { remove: true });
+                return;
+            }
+
+            if (xhr.status < 200 || xhr.status >= 300) {
+                failure('HTTP Error: ' + xhr.status);
+                return;
+            }
+
+            json = JSON.parse(xhr.responseText);
+
+            if (!json || typeof json.location != 'string') {
+                failure('Invalid JSON: ' + xhr.responseText);
+                return;
+            }
+
+            success(json.location);
+            };
+
+            xhr.onerror = function () {
+            failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+            };
+
+            formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+            xhr.send(formData);
         }
-
-        if (xhr.status === 403) {
-            failure('HTTP Error: ' + xhr.status, { remove: true });
-            return;
-        }
-
-        if (xhr.status < 200 || xhr.status >= 300) {
-            failure('HTTP Error: ' + xhr.status);
-            return;
-        }
-
-        json = JSON.parse(xhr.responseText);
-
-        if (!json || typeof json.location != 'string') {
-            failure('Invalid JSON: ' + xhr.responseText);
-            return;
-        }
-
-        success(json.location);
-        };
-
-        xhr.onerror = function () {
-        failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
-        };
-
-        formData = new FormData();
-        formData.append('file', blobInfo.blob(), blobInfo.filename());
-
-        xhr.send(formData);
-    }
     ''',
-    'content_css': 'static/article/css/create_article_content_field.css',
+    'content_css': "http://localhost:8000/static/article/css/create_article_content_field.css",
     'setup': '''
         function (editor) {
             const contentErrorMessageContainer = document.querySelectorAll(".content_container span");
@@ -351,6 +358,11 @@ TINYMCE_DEFAULT_CONFIG = {
                     contentErrorMessageContainer.forEach((span) => {
                         span.style.display = "none";
                     });
+                }
+            });
+            editor.on('keydown', function(e) {
+                if (e.keyCode === 13) {
+                    editor.execCommand('mceSetCSS', false, 'line-height: 1.5;');
                 }
             });
         }

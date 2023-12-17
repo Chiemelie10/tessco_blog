@@ -5,7 +5,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     menuToggle.addEventListener("click", function() {
         if (menu.style.display === "none" || menu.style.display === "") {
+            // const viewportOffset = menu.getBoundingClientRect();
+            // const top = viewportOffset.top;
+            let top = 0;
+            top = document.documentElement.scrollTop;
             menu.style.display = "block";
+            menu.style.top = top + "px";
             menu.scrollTop = 0;
             overlay.style.display = "block";
             document.body.style.overflow = "hidden";

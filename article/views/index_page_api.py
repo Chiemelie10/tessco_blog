@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from article.models import Article
 from article.serializers import IndexPageSerializer
-from article.util import paginate_queryset
+from article.utils import paginate_queryset
 
 
 class IndexPageApi(APIView):

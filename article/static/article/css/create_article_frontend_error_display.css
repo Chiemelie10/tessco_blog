@@ -1,0 +1,10 @@
+.category_frontend_error_alert,
+.title_frontend_error_alert,
+.content_frontend_error_alert,
+.no_img_error_alert,
+.excess_img_error_alert {
+    display: none;
+    color: #ba2121;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

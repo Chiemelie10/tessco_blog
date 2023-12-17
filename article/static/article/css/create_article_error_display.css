@@ -1,0 +1,25 @@
+form .alert_error {
+    color: #ba2121;
+    font-size: 16px;
+    width: 90%;
+    margin: 20px 0 0 0;
+    padding: 0;
+}
+
+.alert_error #id_title,
+.alert_error #id_category {
+    border: 1px solid #ba2121;
+}
+
+form .alert_error span {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+form .display_message {
+    color: #ba2121;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}

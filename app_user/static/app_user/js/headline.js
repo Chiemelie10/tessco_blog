@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const headlineContainer = document.querySelector(".headline-container");
     const headlineLink = document.querySelector(".each-headline-link");
     const headlineImageContainer = document.querySelector(".headline-image-container");
+    const currentSite = window.location.origin
 
     const fragment = document.createDocumentFragment();
 
@@ -14,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         title.textContent = article.title;
         category.textContent = article.category_name;
+        if (article.slug)
+            articleClone.href = `${currentSite}/articles/${article.slug}`;
 
         img.loading = "lazy";
         img.style.opacity = 0;

@@ -1,8 +1,10 @@
-"""This module defines class CreateArticleForm and SubmitArticleForm"""
+"""This module defines class CreateArticleForm and ArticleForm"""
+from uuid import uuid4
 from django import forms
+from django.utils.text import slugify
 # from django.utils.translation import get_language
 from tinymce.widgets import TinyMCE
-from article.util import get_image_src
+from article.utils import get_image_src
 from article.models import Article
 
 
@@ -35,7 +37,7 @@ class ArticleForm(forms.ModelForm):
         if num_of_words < 10:
             raise forms.ValidationError('Number of words must be at least 150.')
 
-        if len(img_src_list) <= 0:
+        if len(img_src_list) == 0:
             raise forms.ValidationError('Please enter a thumbnail for the article')
 
         if len(img_src_list) > 3:
@@ -48,19 +50,44 @@ class ArticleForm(forms.ModelForm):
                                          'only a maximum of 3 is accepted.')
         return content, img_src_list
 
+    def clean_slug(self):
+        """
+        This method populates the slug field with the value of the title field.
+        It appends a unique number only to the title for the slug field if the
+        title already exists.
+        """
+        # pylint: disable=no-member
+
+        title = self.cleaned_data.get('title')
+        slug = slugify(title)
+
+        # Ensure the slug is unique
+        articles = Article.objects.filter(slug=slug)
+
+        if articles.exists():
+            base_slug = slug
+            unique_id = str(uuid4())[:8]
+            slug = f"{base_slug}-{unique_id}"
+
+        self.cleaned_data['slug'] = slug
+
+        return slug
     class Meta:
         """
             model: Name of the model.
             fields: fields of the model to be validated.
         """
         model = Article
-        fields = ["title", "content", "category"]
+        fields = ["title", "content", "category", "slug"]
         widgets = {'content': TinyMCE(
             # attrs={'cols': 80, 'rows': 30},
             mce_attrs={'height': '100%',
                        'width': '100%',
                     #    'language': get_language(),
                     #    'spellchecker_languages': get_language(),
-                    #    'content_css': ['static/article/css/create_article_content_field.css'],
+                       'content_css': [
+                           'http://localhost:8000/static/article/css/'\
+                           'create_article_content_field.css'
+                        ],
             }
         )}
