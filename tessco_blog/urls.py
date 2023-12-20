@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('app_user.urls')),
     path('', include('article.urls')),
     path('', include('image.urls')),
+    path('', include('user_follower.urls')),
 ]
 
 if settings.DEBUG:

@@ -12,6 +12,8 @@
         <link href="{% static 'article/css/create_article_top_nav.css' %}" rel="stylesheet">
         <link href="{% static 'article/css/display_article_title_content.css' %}" rel="stylesheet">
         <link href="{% static 'article/css/prism.css' %}" rel="stylesheet">
+        <link href="{% static 'user_follower/css/user_follower_form.css' %}" rel="stylesheet">
+        <script src="{% static 'user_follower/js/user_follower_form.js' %}"></script>
     </head>
     <body>
         <nav class="link-container">
@@ -25,10 +27,22 @@
             </p>
         </div>
         <div class="content line-numbers">
-            <p class="author">
-                <span>{{article.user.username}} - </span>
-                <span>{{article.created_at}}</span>
-            </p>
+            {% if request.user != article.user %}
+                <p class="author">
+                    <span>{{article.user.username}} - </span>
+                    <span>{{article.created_at}}</span>
+                    <form id="id_user_follower_form">
+                        {% csrf_token %}
+                        <input type="hidden" id="id_following" name="following" value="{{ article.user }}">
+                        {% if is_following is False %}
+                            <button id="id_submit_btn"><span id="id_follow">Follow</span></button>
+                        {% else %}
+                            <button id="id_submit_btn"><span id="id_follow">Unfollow</span></button>
+                        {% endif %}
+                        <div id="spinner"></div>
+                    </form>
+                </p>
+            {% endif %}
             {{ article.content|safe }}
         </div>
         <div class="reaction"></div>

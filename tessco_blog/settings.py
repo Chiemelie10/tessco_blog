@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     'user_account',
     'article',
     'image',
+    'user_follower',
+    'article_like',
+    'article_comment',
     # google allauth setup from line 56 - 57
     'django.contrib.sites',
     'allauth',

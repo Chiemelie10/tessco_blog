@@ -25,6 +25,7 @@
 
 .content .author span:last-child {
     color: gray;
+    font-size: 16px;
 }
 
 .content figure {
