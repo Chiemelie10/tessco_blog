@@ -16,15 +16,9 @@
             <p class="error-message"> {% trans 'Page not found.' %} </p>
             <p class="statement1"> {% trans "The page you were looking for doesn't exist." %} </p>
             <p class="statement2"> {% trans 'You may have mistyped the address or the page has been moved.'%} </p>
-            {% if user.is_authenticated %}
-                <a href="{% url 'get-home-page' %}" class="homepage-link">
-                    <button>{% trans 'Back to homepage' %}</button>
-                </a>
-            {% else %}
-                <a href="{% url 'get-index-page' %}" class="homepage-link">
-                    <button>{% trans 'Back to homepage' %}</button>
-                </a>
-            {% endif %}
+            <a href="{% url 'get-home-page' %}" class="homepage-link">
+                <button>{% trans 'Back to homepage' %}</button>
+            </a>
         </div>
     </body>
 </html>

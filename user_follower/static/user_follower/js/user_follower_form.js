@@ -22,12 +22,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     },
                     body: JSON.stringify({
                         following: following,
+                        pathname: window.location.pathname,
                     }),
                 })
                     .then((response) => {
-                        if (!response.ok)
-                            throw new Error('HTTP error: ' + response.message);
-                        return response.json();
+                        if (response.redirected) {
+                            window.location.href = response.url
+                        } else if (!response.ok) {
+                            throw new Error('HTTP error status: ' + response.status);
+                        } else {
+                            return response.json();
+                        }
                     })
                     .then(data => {
                         if (data.new_state === 'Follow') {
@@ -40,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     })
                     .catch(error => {
                         spinner.style.display = 'none';
-                        console.error(error);
+                        console.error(error.message);
                     });
             }
             user_follower_form();

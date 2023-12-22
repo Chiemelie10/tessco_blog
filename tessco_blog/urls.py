@@ -28,6 +28,7 @@ urlpatterns = [
     path('', include('article.urls')),
     path('', include('image.urls')),
     path('', include('user_follower.urls')),
+    path('', include('article_like.urls')),
 ]
 
 if settings.DEBUG:

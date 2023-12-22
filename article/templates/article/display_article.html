@@ -8,12 +8,16 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{% static 'app_user/img/tessco-blog-logo.png' %}" type="image/png" rel="icon">
-        <link href="{% static 'article/css/create_article_body.css' %}" rel="stylesheet">
+        <link href="{% static 'article/css/display_article_body.css' %}" rel="stylesheet">
         <link href="{% static 'article/css/create_article_top_nav.css' %}" rel="stylesheet">
         <link href="{% static 'article/css/display_article_title_content.css' %}" rel="stylesheet">
         <link href="{% static 'article/css/prism.css' %}" rel="stylesheet">
+        <link href="{% static 'article/css/display_article_share_like_comment.css' %}" rel="stylesheet">
         <link href="{% static 'user_follower/css/user_follower_form.css' %}" rel="stylesheet">
+        <script src="{% static 'article/js/display_article_remove_added_p_tags.js' %}"></script>
         <script src="{% static 'user_follower/js/user_follower_form.js' %}"></script>
+        <script src="{% static 'article_like/js/display_article_reaction.js' %}"></script>
+        <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=6582a936d945ce0012dd9640&product=inline-share-buttons&source=platform" async="async"></script>
     </head>
     <body>
         <nav class="link-container">
@@ -44,8 +48,60 @@
                 </p>
             {% endif %}
             {{ article.content|safe }}
+            <div class="share-like-comment">
+                <p class="share-post"> Share this post: </p>
+                <div class="sharethis-inline-share-buttons"></div>
+                <p class="like-post"> Click icon to like or dislike this post </p>
+                <form class="like">
+                    {% csrf_token %}
+                    {% if article_reaction == 'like' %}
+                        <div class="like-btn-style" style="background-color: #00FF00">
+                            <input type="image" alt="Like" class="article-like" name="reaction" value="like" src="{% static 'app_user/img/like.png' %}">
+                            <div class="total-likes"> {{ article.total_likes }} </div>
+                        </div>
+                        <div class="dislike-btn-style">
+                            <input type="image" alt="Like" class="article-dislike" name="reaction" value="dislike" src="{% static 'app_user/img/thumb_down.png' %}">
+                            <div class="total-dislikes"> {{ article.total_dislikes }} </div>
+                        </div>
+                    {% elif article_reaction == 'dislike' %}
+                        <div class="like-btn-style">
+                            <input type="image" alt="Like" class="article-like" name="reaction" value="like" src="{% static 'app_user/img/like.png' %}">
+                            <div class="total-likes"> {{ article.total_likes }} </div>
+                        </div>
+                        <div class="dislike-btn-style" style="background-color: #00FF00">
+                            <input type="image" alt="Like" class="article-dislike" name="reaction" value="dislike" src="{% static 'app_user/img/thumb_down.png' %}">
+                            <div class="total-dislikes"> {{ article.total_dislikes }} </div>
+                        </div>
+                    {% else %}
+                        <div class="like-btn-style">
+                            <input type="image" alt="Like" class="article-like" name="reaction" value="like" src="{% static 'app_user/img/like.png' %}">
+                            <div class="total-likes"> {{ article.total_likes }} </div>
+                        </div>
+                        <div class="dislike-btn-style">
+                            <input type="image" alt="Like" class="article-dislike" name="reaction" value="dislike" src="{% static 'app_user/img/thumb_down.png' %}">
+                            <div class="total-dislikes"> {{ article.total_dislikes }} </div>
+                        </div>
+                    {% endif %}
+                </form>
+                <p class="comment"> Leave a comment </p>
+                <p class="comment-disclaimer"> 
+                    <span>Disclaimer</span>
+                    <span>
+                        Comments posted here do not reflect the opinions of Tessco blog or any of the employee.
+                    </span>
+                    <form id="comment-form">
+                        <textarea id="id-comment"></textarea>
+                        <div class="sub-btn-pos-style">
+                            <div class="anonymous-pos-style">
+                                <input id="id-anonymous" type="checkbox" name="Anonymous" value="Anonymous">
+                                <label for="id-anonymous">Anonymous</label>
+                            </div>
+                            <button id="comment-sub-btn"><span id="comment-sub-text">Submit comment</span></button>
+                        </div>
+                    </form>
+                </p>
+            </div>
         </div>
-        <div class="reaction"></div>
         <div class="write-comment"></div>
         <div class="related-articles"></div>
         <div class="display-comments"></div>

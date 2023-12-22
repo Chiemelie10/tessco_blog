@@ -34,4 +34,22 @@ class Article(models.Model):
     def __str__(self):
         """This method returns a string representation of the instance of this class."""
         # pylint: disable=no-member
-        return f'{self.id}'
+        return f'{self.id} {self.user} {self.title}'
+
+    def get_total_reactions(self):
+        """This method returns the total number of likes and dislikes for an article."""
+        # pylint: disable=no-member
+        return self.reactions.all().exclude(reaction_value=None).count()
+
+    def get_reaction_type_count(self, reaction_type):
+        """This method returns the total number of likes or dislikes for an article."""
+        # pylint: disable=no-member
+        return self.reactions.filter(reaction_value=reaction_type).count()
+
+    def total_likes(self):
+        """This method returns the total number of likes for an article."""
+        return self.get_reaction_type_count('like')
+
+    def total_dislikes(self):
+        """This method returns the total number of dislikes for an article."""
+        return self.get_reaction_type_count('dislike')

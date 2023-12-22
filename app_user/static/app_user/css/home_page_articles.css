@@ -111,6 +111,7 @@
         font-size: min(4.5vw, 14px);
         width: 100%;
         margin-top: 10px;
+        color: #04325f;
     }
 
     .article-performance .article-like,

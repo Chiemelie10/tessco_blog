@@ -1,6 +1,7 @@
 #id_user_follower_form {
     display: flex;
     align-items: center;
+    margin: 16px 0;
 }
 
 #id_submit_btn {
@@ -8,8 +9,9 @@
     background-color: #04325f;
     color: #ffffff;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 14px;
     font-family: Arial, Helvetica, sans-serif;
+    cursor: pointer;
 }
 
 #spinner {

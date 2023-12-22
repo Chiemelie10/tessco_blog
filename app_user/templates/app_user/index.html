@@ -7,16 +7,34 @@
 {% endblock %}
 
 {% block article_stylesheet %}
-    <link href="{% static 'app_user/css/articles.css' %}" rel="stylesheet">
+    {% if request.user.is_authenticated %}
+        <link href="{% static 'app_user/css/home_page_articles.css' %}" rel="stylesheet">
+    {% else %}
+        <link href="{% static 'app_user/css/articles.css' %}" rel="stylesheet">
+    {% endif %}
 {% endblock %}
 
 {% block spinner_stylesheet %}
-    <link href="{% static 'app_user/css/spinner.css' %}" rel="stylesheet">
+    {% if request.user.is_authenticated %}
+        <link href="{% static 'app_user/css/home_page_spinner.css' %}" rel="stylesheet">
+    {% else %}
+        <link href="{% static 'app_user/css/spinner.css' %}" rel="stylesheet">
+    {% endif %}
 {% endblock %}
 
 {% block footer_stylesheet %}
-    <link href="{% static 'app_user/css/footer.css' %}" rel="stylesheet">
+    {% if request.user.is_authenticated %}
+        <link href="{% static 'app_user/css/home_page_footer.css' %}" rel="stylesheet">
+    {% else %}
+        <link href="{% static 'app_user/css/footer.css' %}" rel="stylesheet">
+    {% endif %}
 {% endblock %}
+
+{% if request.user.is_authenticated %}
+    {% block scroll_to_top %}
+        <link href="{% static 'app_user/js/scroll_to_top.js' %}" rel="stylesheet">
+    {% endblock %}
+{% endif %}
 
 {% block header %}
     <div class="moto">
@@ -62,11 +80,18 @@
                         <li><a> Complaints & corrections </a></li>
                         <li><a> Privacy policy </a></li>
                         <li><a> Terms and conditions </a></li>
+                        {% if request.user.is_authenticated %}
+                            <li><a href="{% url 'account_logout' %}"> Logout </a></li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
         </div>
-        <a href="{% url 'account_login' %}" class="sign-in">Sign In</a>
+        {% if request.user.is_authenticated %}
+            <a class="sign-in">Hi {{ user.username|truncatechars:15|safe }}</a>
+        {% else %}
+            <a href="{% url 'account_login' %}" class="sign-in">Sign In</a>
+        {% endif %}
         <div class="overlay"></div>
     </div>
 {% endblock %}
@@ -115,24 +140,42 @@
         </div>
 {% endblock %}
 
+
 {% block footer %}
-    <div class="footer">
-        <div class="assist">
-            <a>Help</a>
-            <a>Advertise with us</a>
-            <a>Complaints & corrections</a>
+    {% if request.user.is_authenticated %}
+        <nav class="footer">
+            <a class="scroll-to-top" href="#top">
+                <img src="{% static 'app_user/img/triangle.png' %}">
+                <span>To top</span>
+            </a>
+            <a href="{% url 'create-article' %}">
+                <img src="{% static 'app_user/img/article.png' %}">
+                <span>Create</span>
+            </a>
+            <a>
+                <img src="{% static 'app_user/img/profile.png' %}">
+                <span>Profile</span>
+            </a>
+        </nav>
+    {% else %}
+        <div class="footer">
+            <div class="assist">
+                <a>Help</a>
+                <a>Advertise with us</a>
+                <a>Complaints & corrections</a>
+            </div>
+            <div class="socials">
+                <a>Contact us:</a>
+                <a>Twitter</a>
+                <a>Facebook</a>
+                <a href="mailto:tesscoblog@gmail.com">Email</a>
+            </div>
+            <div class="rules">
+                <a>Privacy policy</a>
+                <a>Terms and conditions</a>
+            </div>
         </div>
-        <div class="socials">
-            <a>Contact us:</a>
-            <a>Twitter</a>
-            <a>Facebook</a>
-            <a href="mailto:tesscoblog@gmail.com">Email</a>
-        </div>
-        <div class="rules">
-            <a>Privacy policy</a>
-            <a>Terms and conditions</a>
-        </div>
-    </div>
+    {% endif %}
 {% endblock %}
 {% block script %}
     {{ total_pages|json_script:"total_pages_id"}}

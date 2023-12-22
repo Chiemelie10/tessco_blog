@@ -29,7 +29,7 @@ SECRET_KEY = getenv('TESSCOBLOG_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -206,7 +206,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 # signs in users that logged using django-allauth without showing the google warning page.
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
-LOGIN_REDIRECT_URL = '/home'
+LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_ADAPTER = 'app_user.adapters.CustomAccountAdapter'
 
